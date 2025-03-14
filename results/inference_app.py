@@ -99,11 +99,10 @@ dashes = {
 
 # LINEAR FIGURES
 p =100
-y_method = "hidimstats"
 cor=0.6
 alpha = 0.05
 
-df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
+df = pd.read_csv(f"csv/inference_hidimstats_p{p}_cor{cor}.csv",)
 
 
 # Display the first few rows of the DataFrame
@@ -223,7 +222,7 @@ plt.subplots_adjust(hspace=0.4, wspace=0.3)
 fig.text(0.5, -0.05, 'Number of samples', ha='center', fontsize=20)
 
 
-plt.savefig(f"figures/inference_{y_method}_p{p}_cor{cor}_auc_appendix.pdf", bbox_inches="tight")
+plt.savefig(f"figures/inference_hidimstats_p{p}_cor{cor}_auc_appendix.pdf", bbox_inches="tight")
 
 
 
@@ -272,7 +271,7 @@ plt.subplots_adjust(hspace=0.4, wspace=0.3)
 fig.text(0.5, -0.05, 'Number of samples', ha='center', fontsize=20)
 
 
-plt.savefig(f"figures/inference_{y_method}_p{p}_cor{cor}_time_appendix.pdf", bbox_inches="tight")
+plt.savefig(f"figures/inference_hidimstats_p{p}_cor{cor}_time_appendix.pdf", bbox_inches="tight")
 
 
 
@@ -282,9 +281,8 @@ plt.savefig(f"figures/inference_{y_method}_p{p}_cor{cor}_time_appendix.pdf", bbo
 # POLYNOMIAL FIGURES
 
 p =50
-y_method = "poly"
 cor=0.6
-df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
+df = pd.read_csv(f"csv/inference_poly_p{p}_cor{cor}.csv",)
 
 
 # Display the first few rows of the DataFrame
@@ -376,7 +374,7 @@ plt.subplots_adjust(hspace=0.4, wspace=0.3)
 fig.text(0.5, -0.05, 'Number of samples', ha='center', fontsize=20)
 
 
-plt.savefig(f"figures/inference_{y_method}_p{p}_cor{cor}_auc_appendix.pdf", bbox_inches="tight")
+plt.savefig(f"figures/inference_poly_p{p}_cor{cor}_auc_appendix.pdf", bbox_inches="tight")
 
 
 
@@ -428,7 +426,7 @@ ax[ 2].legend().remove()
 plt.subplots_adjust(hspace=0.4, wspace=0.3)
 fig.text(0.5, -0.05, 'Number of samples', ha='center', fontsize=20)
 
-plt.savefig(f"figures/inference_{y_method}_p{p}_cor{cor}_time_appendix.pdf", bbox_inches="tight")
+plt.savefig(f"figures/inference_poly_p{p}_cor{cor}_time_appendix.pdf", bbox_inches="tight")
 
 
 
