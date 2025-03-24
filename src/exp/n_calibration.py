@@ -36,7 +36,8 @@ for l in range(num_rep):
     print("Experiment: "+str(l))
     for (i,cor) in enumerate(intra_cor):
         print("With correlation="+str(cor))
-        X, y, _ = GenToysDataset(n=n, d=p, cor=cor_meth, y_method=y_method, mu=None, rho_toep=cor)
+        seed+=1
+        X, y, _ = GenToysDataset(n=n, d=p, cor=cor_meth, y_method=y_method, mu=None, rho_toep=cor, seed=seed)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed)
     
         if super_learner:
@@ -45,7 +46,7 @@ for l in range(num_rep):
             ntrees = np.arange(100, 500, 100)
             lr = np.arange(.01, .1, .05)
             param_grid = [{'n_estimators':ntrees, 'learning_rate':lr}]
-            model = GridSearchCV(GradientBoostingRegressor(loss = 'squared_error', max_depth = 3), param_grid = param_grid, cv = 5, n_jobs=n_jobs)
+            model = GridSearchCV(GradientBoostingRegressor(loss = 'squared_error', max_depth = 3, random_state=seed), param_grid = param_grid, cv = 5, n_jobs=n_jobs)
             model.fit(X_train, y_train)
         sobol_CPI= Sobol_CPI(
             estimator=model,
