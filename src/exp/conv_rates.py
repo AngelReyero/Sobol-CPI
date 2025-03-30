@@ -50,9 +50,10 @@ true_importance=np.zeros((num_rep, len(n_samples), p))
 
 for l in range(num_rep):
     print("Experiment: "+str(l))
+    seed+=1
     for (i,n) in enumerate(n_samples):
         print("With n="+str(n))
-        X, y, true_imp = GenToysDataset(n=n, d=p, cor=cor_meth, y_method=y_method, k=2, mu=None, rho_toep=cor,  sparsity=sparsity, seed=seed)
+        X, y, true_imp = GenToysDataset(n=n, d=p, cor=cor_meth, y_method=y_method, mu=None, rho_toep=cor,  sparsity=sparsity, seed=seed)
         true_importance[l, i]=true_imp
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=seed)
         

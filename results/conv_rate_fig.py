@@ -12,10 +12,7 @@ Plot of double robustness with complex learners from the main text.
 
 p=50
 cor=0.6
-n_samples=[100, 250]#[100, 250, 500, 1000, 2000, 5000]
-beta= np.array([2, 1])
-cor_meth='toep'
-sparsity=0.25
+n_samples=[100, 250, 500, 1000, 2000, 5000]
 super_learner=True
 y_method="nonlin"
 
