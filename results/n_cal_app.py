@@ -65,7 +65,7 @@ ax[0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
 ax[ 0].tick_params(axis='y', labelsize=15) 
 ax[ 0].set_xlabel(r'')
 ax[ 0].set_ylabel(f'Importance of $X_0$', fontsize=20)
-#ax[ 0].legend().remove()
+ax[ 0].legend().remove()
 
 # Importance of V6 (not important)
 sns.lineplot(data=df, x='intra_cor', y='imp_V6', hue='method', palette=palette, ax=ax[1])  # Top-right subplot
