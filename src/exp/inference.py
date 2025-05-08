@@ -30,7 +30,7 @@ snr=2
 
 n_cal=10
 n_cal2 = 100
-n_jobs=10
+n_jobs=20
 
 best_model=None
 dict_model=None

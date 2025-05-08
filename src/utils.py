@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.neural_network import MLPRegressor
-from xgboost import XGBRegressor
+#from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_error, r2_score, roc_auc_score
 import random
 import matplotlib.pyplot as plt
@@ -123,7 +123,7 @@ def best_mod(X_train, y_train, seed=2024, n_jobs=10, verbose=False, regressor=No
     if regressor is not None:
         model, score = hypertune_predictor(regressor, X_train, y_train, dict_reg, n_jobs=n_jobs)
         return (model, score) if verbose else model
-
+    from xgboost import XGBRegressor
     # List of models and their parameter grids
     models_param_grids = {
         "RandomForest": (
