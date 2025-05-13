@@ -1,7 +1,7 @@
 from sklearn.metrics import roc_auc_score
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import glob 
 import numpy as np
 import pandas as pd
 
@@ -16,10 +16,10 @@ as the Total Sobol Index is explicitly computable.
 
 
 palette = {
-    'Sobol-CPI(10)': 'purple',
-    'Sobol-CPI(10)_sqrt': 'purple',
-    'Sobol-CPI(10)_n': 'purple',
-    'Sobol-CPI(10)_n2': 'purple',
+    'Sobol-CPI(10)': 'cyan',
+    'Sobol-CPI(10)_sqrt': 'cyan',
+    'Sobol-CPI(10)_n': 'cyan',
+    'Sobol-CPI(10)_n2': 'cyan',
     'Sobol-CPI(1)': 'blue',
     'Sobol-CPI(1)_sqrt': 'blue',
     'Sobol-CPI(1)_n': 'blue',
@@ -29,14 +29,14 @@ palette = {
     'LOCO_n': 'red',
     'LOCO_sqrt': 'red',
     'LOCO_n2': 'red',
-    'Sobol-CPI(100)': 'cyan',
-    'Sobol-CPI(100)_sqrt': 'cyan',
-    'Sobol-CPI(100)_n': 'cyan',
-    'Sobol-CPI(100)_n2': 'cyan',
-    'Sobol-CPI(10)_bt': 'purple',
+    'Sobol-CPI(100)': 'purple',
+    'Sobol-CPI(100)_sqrt': 'purple',
+    'Sobol-CPI(100)_n': 'purple',
+    'Sobol-CPI(100)_n2': 'purple',
+    'Sobol-CPI(10)_bt': 'cyan',
     'Sobol-CPI(1)_bt': 'blue',
     'LOCO_bt': 'red',
-    'Sobol-CPI(100)_bt': 'cyan',
+    'Sobol-CPI(100)_bt': 'purple',
 
 }
 
@@ -102,7 +102,14 @@ p =100
 cor=0.6
 alpha = 0.05
 
-df = pd.read_csv(f"csv/inference_hidimstats_p{p}_cor{cor}.csv",)
+parallel = True
+
+if parallel:
+    csv_files = glob.glob(f"csv/inference/inference_hidimstats_p{p}_cor{cor}*.csv")
+    df = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+else:
+    df = pd.read_csv(f"csv/inference_hidimstats_p{p}_cor{cor}.csv",)
+
 
 
 # Display the first few rows of the DataFrame
@@ -282,7 +289,14 @@ plt.savefig(f"figures/inference_hidimstats_p{p}_cor{cor}_time_appendix.pdf", bbo
 
 p =50
 cor=0.6
-df = pd.read_csv(f"csv/inference_poly_p{p}_cor{cor}.csv",)
+parallel=False
+
+if parallel:
+    csv_files = glob.glob(f"csv/inference/inference_poly_p{p}_cor{cor}*.csv")
+    df = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+else:
+    df = pd.read_csv(f"csv/inference_poly_p{p}_cor{cor}.csv",)
+
 
 
 # Display the first few rows of the DataFrame
@@ -342,7 +356,7 @@ sns.set_style("white")
 fig, ax = plt.subplots(1, 2, figsize=(12, 5), gridspec_kw={'hspace': 0.1, 'wspace': 0.3})
 
 
-
+df = df[df['method'].isin(markers.keys())]
 
 methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W'] 
 filtered_df = df[df['method'].isin(methods_to_plot)]

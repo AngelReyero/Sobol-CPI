@@ -1,0 +1,4 @@
+log*
+*pyc
+*sh
+*pycache*

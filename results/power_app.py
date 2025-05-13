@@ -6,8 +6,8 @@ import pandas as pd
 
 
 
-p = 100
-y_method = "hidimstats"
+p = 50
+y_method = "poly"
 
 cor=0.6
 
@@ -21,10 +21,10 @@ df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
 print(df.head())
 
 palette = {
-    'Sobol-CPI(10)': 'purple',
-    'Sobol-CPI(10)_sqrt': 'purple',
-    'Sobol-CPI(10)_n': 'purple',
-    'Sobol-CPI(10)_n2': 'purple',
+    'Sobol-CPI(10)': 'cyan',
+    'Sobol-CPI(10)_sqrt': 'cyan',
+    'Sobol-CPI(10)_n': 'cyan',
+    'Sobol-CPI(10)_n2': 'cyan',
     'Sobol-CPI(1)': 'blue',
     'Sobol-CPI(1)_sqrt': 'blue',
     'Sobol-CPI(1)_n': 'blue',
@@ -34,14 +34,14 @@ palette = {
     'LOCO_n': 'red',
     'LOCO_sqrt': 'red',
     'LOCO_n2': 'red',
-    'Sobol-CPI(100)': 'cyan',
-    'Sobol-CPI(100)_sqrt': 'cyan',
-    'Sobol-CPI(100)_n': 'cyan',
-    'Sobol-CPI(100)_n2': 'cyan',
-    'Sobol-CPI(10)_bt': 'purple',
+    'Sobol-CPI(100)': 'purple',
+    'Sobol-CPI(100)_sqrt': 'purple',
+    'Sobol-CPI(100)_n': 'purple',
+    'Sobol-CPI(100)_n2': 'purple',
+    'Sobol-CPI(10)_bt': 'cyan',
     'Sobol-CPI(1)_bt': 'blue',
     'LOCO_bt': 'red',
-    'Sobol-CPI(100)_bt': 'cyan',
+    'Sobol-CPI(100)_bt': 'purple',
 
 }
 

@@ -1,15 +1,18 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_auc_score
+import matplotlib.gridspec as gridspec
 
 import numpy as np
 import pandas as pd
+import glob
+
 
 """
 Plot of double robustness with complex learners from the main text.
 """
 
-
+parallel=True
 p=50
 cor=0.6
 n_samples=[100, 250, 500, 1000, 2000, 5000]
@@ -64,8 +67,10 @@ def theoretical_curve(y_method, j, correlation,p, beta=[2, 1]):
             inv=np.delete(inv, j, axis=1)
             inv=np.linalg.inv(inv)
             return 4*(1-np.dot(np.dot(sigma_1,inv), sigma_1.T))*0.5
-
-if super_learner:
+if parallel:
+    csv_files = glob.glob(f"csv/conv_rates/conv_rates_{y_method}_p{p}_cor{cor}*.csv")
+    df = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+elif super_learner:
     df = pd.read_csv(f"csv/conv_rates_{y_method}_p{p}_cor{cor}_super.csv")
 else:
     df = pd.read_csv(f"csv/conv_rates_{y_method}_p{p}_cor{cor}.csv")
@@ -96,75 +101,76 @@ df['method'] = df['method'].replace('Sobol-CPI', 'Sobol-CPI(100)')
 
 palette = {'Sobol-CPI(100)': 'purple', 'Sobol-CPI(1)': 'blue', 'LOCO-W':'green', 'PFI':'orange', "LOCO-HD": "red"}
 
-fig, ax = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={'hspace': 0.2, 'wspace': 0.2})
 
 
 
-# Plot for imp_V0 (top-left subplot)
-sns.set(rc={'figure.figsize':(4,4)})
-sns.lineplot(data=df, x='n_samples', y='imp_V0', hue='method', palette=palette, ax=ax[0, 0])  # Top-left subplot
+sns.set_style("white")
 
-# Add the theoretical curve for imp_V0
+# Create figure and GridSpec
+fig = plt.figure(figsize=(26, 6))
+gs = gridspec.GridSpec(1, 5, width_ratios=[1, -0.15, 1, 1, 1], wspace=0.3)  # 0.1 is the spacer
+
+# Define axes, with a spacer in position 1
+ax0 = fig.add_subplot(gs[0])
+ax_spacer = fig.add_subplot(gs[1])  # this will stay empty
+ax1 = fig.add_subplot(gs[2])
+ax2 = fig.add_subplot(gs[3])
+ax3 = fig.add_subplot(gs[4])
+
+# Turn off the spacer subplot
+ax_spacer.axis("off")
+
+# Now use [ax0, ax1, ax2, ax3] as your four real axes
+axes = [ax0, ax1, ax2, ax3]
+for axis in axes:
+    axis.grid(False)
+
+# Plot for imp_V0 (subplot 1)
+sns.lineplot(data=df, x='n_samples', y='imp_V0', hue='method', palette=palette, ax=ax0)
 th_cv_v0 = theoretical_curve(y_method, 0, cor, p, beta=[2, 1])
-ax[0, 0].plot(n_samples, [th_cv_v0 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
+ax0.plot(n_samples, [th_cv_v0 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
+ax0.set_xscale('log')
+ax0.tick_params(axis='x', labelsize=18)
+ax0.tick_params(axis='y', labelsize=18)
+ax0.set_xlabel('')
+ax0.set_ylabel(f'Importance of $X_0$', fontsize=25)
+ax0.legend().remove()
 
-# Format top-left subplot
-ax[0, 0].set_xscale('log')
-ax[0, 0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[0, 0].tick_params(axis='y', labelsize=15) 
-ax[0, 0].set_xlabel(r'')
-ax[0, 0].set_ylabel(f'Importance of $X_0$', fontsize=20)
-ax[0, 0].legend().remove()
-
-# Plot for imp_V6 (top-right subplot)
-sns.lineplot(data=df, x='n_samples', y='imp_V6', hue='method', palette=palette, ax=ax[0, 1])  # Top-right subplot
-
-# Add the theoretical curve for imp_V6
+# Plot for imp_V6 (subplot 2)
+sns.lineplot(data=df, x='n_samples', y='imp_V6', hue='method', palette=palette, ax=ax1)
 th_cv_v6 = theoretical_curve(y_method, 6, cor, p, beta=[2, 1])
-ax[0, 1].plot(n_samples, [th_cv_v6 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
+ax1.plot(n_samples, [th_cv_v6 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
+ax1.set_xscale('log')
+ax1.tick_params(axis='x', labelsize=18)
+ax1.tick_params(axis='y', labelsize=18)
+ax1.set_xlabel('')
+ax1.set_ylabel(f'Importance of $X_6$', fontsize=25)
+ax1.legend().remove()
 
-# Format top-right subplot
-ax[0, 1].set_xscale('log')
-ax[0, 1].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[0, 1].tick_params(axis='y', labelsize=15) 
-ax[0, 1].set_xlabel(r'')
-ax[0, 1].set_ylabel(f'Importance of $X_6$', fontsize=20)
-ax[0, 1].legend().remove()
+# Plot for AUC (subplot 3)
+sns.lineplot(data=df, x='n_samples', y='AUC', hue='method', palette=palette, ax=ax2)
+ax2.set_xscale('log')
+ax2.tick_params(axis='x', labelsize=18)
+ax2.tick_params(axis='y', labelsize=18)
+ax2.set_xlabel('')
+ax2.set_ylabel('AUC', fontsize=25)
+ax2.legend().remove()
 
-sns.lineplot(data=df, x='n_samples', y='AUC', hue='method', palette=palette, ax=ax[1, 0])  # Bottom-left subplot
+# Plot for null importance (subplot 4)
+sns.lineplot(data=df, x='n_samples', y='null_imp', hue='method', palette=palette, ax=ax3)
+ax3.set_xscale('log')
+ax3.tick_params(axis='x', labelsize=18)
+ax3.tick_params(axis='y', labelsize=18)
+ax3.set_xlabel('')
+ax3.set_ylabel('Bias null covariates', fontsize=25)
+ax3.legend().remove()
 
-
-# Format bottom-left subplot
-ax[1, 0].set_xscale('log')
-ax[1, 0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[1, 0].tick_params(axis='y', labelsize=15) 
-ax[1, 0].set_xlabel(r'')
-ax[1, 0].set_ylabel(f'AUC', fontsize=20)
-ax[1, 0].legend().remove()
-
-# Plot for imp_V8 (bottom-right subplot)
-sns.lineplot(data=df, x='n_samples', y='null_imp', hue='method', palette=palette, ax=ax[1, 1])  # Bottom-right subplot
-
-
-# Format bottom-right subplot
-ax[1, 1].set_xscale('log')
-ax[1, 1].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[1, 1].tick_params(axis='y', labelsize=15) 
-ax[1, 1].set_xlabel(r'')
-ax[1, 1].set_ylabel(f'Bias null covariates', fontsize=20)
-ax[1, 1].legend().remove()
-
-# Adjust subplot layout for better spacing
-plt.subplots_adjust(hspace=0.4, wspace=0.3, left=0.01, right=0.99)
-
-fig.text(0.5, 0.04, 'Number of samples', ha='center', fontsize=20)
+# Add common x-axis label
+fig.text(0.5, -0.02, 'Number of samples', ha='center', fontsize=25)
 
 
-
+# Save figure
 if super_learner: 
     plt.savefig(f"figures/conv_rates_{y_method}_p{p}_cor{cor}_super.pdf", bbox_inches="tight")
 else:
     plt.savefig(f"figures/conv_rates_{y_method}_p{p}_cor{cor}.pdf", bbox_inches="tight")
-
-
-

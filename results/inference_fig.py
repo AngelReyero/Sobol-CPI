@@ -1,9 +1,11 @@
 from sklearn.metrics import roc_auc_score
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 import numpy as np
 import pandas as pd
+import glob
 
 
 """
@@ -15,23 +17,26 @@ demonstrate that the Sobol-CPI method achieves better performance, even for non-
 
 p =100
 y_method = "hidimstats"
-
+parallel = True
 seed= 0
 
 cor=0.6
 alpha = 0.05
 
-
-df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
+if parallel:
+    csv_files = glob.glob(f"csv/inference/inference_{y_method}_p{p}_cor{cor}*.csv")
+    df = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+else:
+    df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
 
 
 # Display the first few rows of the DataFrame
 print(df.head())
 
 palette = {
-    'Sobol-CPI(10)': 'purple',
-    'Sobol-CPI(10)_sqrt': 'purple',
-    'Sobol-CPI(10)_n': 'purple',
+    'Sobol-CPI(10)': 'cyan',
+    'Sobol-CPI(10)_sqrt': 'cyan',
+    'Sobol-CPI(10)_n': 'cyan',
     'Sobol-CPI(1)': 'blue',
     'Sobol-CPI(1)_sqrt': 'blue',
     'Sobol-CPI(1)_n': 'blue',
@@ -40,13 +45,13 @@ palette = {
     'LOCO': 'red',
     'LOCO_n': 'red',
     'LOCO_sqrt': 'red',
-    'Sobol-CPI(100)': 'cyan',
-    'Sobol-CPI(100)_sqrt': 'cyan',
-    'Sobol-CPI(100)_n': 'cyan',
-    'Sobol-CPI(10)_bt': 'purple',
+    'Sobol-CPI(100)': 'purple',
+    'Sobol-CPI(100)_sqrt': 'purple',
+    'Sobol-CPI(100)_n': 'purple',
+    'Sobol-CPI(10)_bt': 'cyan',
     'Sobol-CPI(1)_bt': 'blue',
     'LOCO_bt': 'red',
-    'Sobol-CPI(100)_bt': 'cyan',
+    'Sobol-CPI(100)_bt': 'purple',
 }
 
 
@@ -118,68 +123,51 @@ df['method'] = df['method'].replace('S-CPI2_bt', 'Sobol-CPI(100)_bt')
 df['method'] = df['method'].replace('LOCO_sqd', 'LOCO_n2')
 
 
+
 sns.set_style("white")
-fig, ax = plt.subplots(2, 2, figsize=(16, 9), gridspec_kw={'hspace': 0.2, 'wspace': 0.2})
+fig, ax = plt.subplots(1, 4, figsize=(24, 6), gridspec_kw={'wspace': 0.3})
 
-
-# Plot for AUC (top-left subplot)
-methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W'] 
+# Plot 1: AUC
+methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W']
 filtered_df = df[df['method'].isin(methods_to_plot)]
-sns.set(rc={'figure.figsize':(6,3)})
-sns.lineplot(data=filtered_df, x='n', y='AUC', hue='method', palette=palette, ax=ax[0, 0])  # Top-left subplot
+sns.lineplot(data=filtered_df, x='n', y='AUC', hue='method', palette=palette, ax=ax[0])
+ax[0].set_xscale('log')
+ax[0].tick_params(axis='x', labelsize=18)
+ax[0].tick_params(axis='y', labelsize=18)
+ax[0].set_xlabel('')
+ax[0].set_ylabel('AUC', fontsize=25)
+ax[0].legend().remove()
 
-# Format top-left subplot
-ax[0, 0].set_xscale('log')
-ax[0, 0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[0, 0].tick_params(axis='y', labelsize=15) 
-ax[0, 0].set_xlabel(r'')
-ax[0, 0].set_ylabel(f'AUC', fontsize=20)
-ax[0, 0].legend().remove()
+# Plot 2: Bias non-null covariates
+sns.lineplot(data=filtered_df, x='n', y='non_null', hue='method', palette=palette, ax=ax[1])
+ax[1].set_xscale('log')
+ax[1].tick_params(axis='x', labelsize=18)
+ax[1].tick_params(axis='y', labelsize=18)
+ax[1].set_xlabel('')
+ax[1].set_ylabel('Bias non-null covariates', fontsize=25)
+ax[1].legend().remove()
 
+# Plot 3: Power
+methods_to_plot_bt = ['Sobol-CPI(1)_bt', 'Sobol-CPI(10)_bt', 'Sobol-CPI(100)_bt', 'LOCO_bt', 'LOCO-W']
+filtered_df_bt = df[df['method'].isin(methods_to_plot_bt)]
+sns.lineplot(data=filtered_df_bt, x='n', y='power', hue='method', palette=palette, ax=ax[2])
+ax[2].set_xscale('log')
+ax[2].tick_params(axis='x', labelsize=18)
+ax[2].tick_params(axis='y', labelsize=18)
+ax[2].set_xlabel('')
+ax[2].set_ylabel('Power', fontsize=25)
+ax[2].legend().remove()
 
+# Plot 4: Type-I error
+sns.lineplot(data=filtered_df_bt, x='n', y='type_I', hue='method', palette=palette, ax=ax[3])
+ax[3].set_xscale('log')
+ax[3].tick_params(axis='x', labelsize=18)
+ax[3].tick_params(axis='y', labelsize=18)
+ax[3].set_xlabel('')
+ax[3].set_ylabel('Type-I error', fontsize=25)
+ax[3].legend().remove()
 
-
-
-
-
-# Plot for bias estimating non-null covariates (top-right subplot)
-methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W'] 
-filtered_df = df[df['method'].isin(methods_to_plot)]
-sns.lineplot(data=filtered_df, x='n', y='non_null', hue='method', palette=palette, ax=ax[0, 1])  # Top-right subplot
-
-ax[0, 1].set_xscale('log')
-ax[0, 1].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[0, 1].tick_params(axis='y', labelsize=15) 
-ax[0, 1].set_xlabel(r'')
-ax[0, 1].set_ylabel(f'Bias non-null covariates', fontsize=20)
-ax[0, 1].legend().remove()
-
-
-
-
-
-# Power
-methods_to_plot = ['Sobol-CPI(1)_bt', 'Sobol-CPI(10)_bt', 'Sobol-CPI(100)_bt', 'LOCO_bt', 'LOCO-W'] 
-filtered_df = df[df['method'].isin(methods_to_plot)]
-sns.lineplot(data=filtered_df, x='n', y='power', hue='method', palette=palette, ax=ax[1, 0])  # Bottom-left subplot
-
-ax[1, 0].set_xscale('log')
-ax[1, 0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[1, 0].tick_params(axis='y', labelsize=15) 
-ax[1, 0].set_xlabel(r'')
-ax[1, 0].set_ylabel(f'Power', fontsize=20)
-ax[1, 0].legend().remove()
-
-# Type-I error
-sns.lineplot(data=filtered_df, x='n', y='type_I', hue='method', palette=palette, ax=ax[1, 1])  # Top-left subplot
-
-# Format top-left subplot
-ax[1, 1].set_xscale('log')
-ax[1, 1].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
-ax[1, 1].tick_params(axis='y', labelsize=15) 
-ax[1, 1].set_xlabel(r'')
-ax[1, 1].set_ylabel(f'Type-I error', fontsize=20)
-ax[1, 1].legend().remove()
+fig.text(0.5, -0.02, 'Number of samples', ha='center', fontsize=25)
 
 
 plt.savefig(f"figures/inference_p{p}_cor{cor}_{y_method}.pdf", bbox_inches="tight")
