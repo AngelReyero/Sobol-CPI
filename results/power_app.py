@@ -1,19 +1,26 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import glob
 import numpy as np
 import pandas as pd
 
 
 
-p = 50
-y_method = "poly"
+p = 100
+y_method = "hidimstats"
 
 cor=0.6
 
 alpha = 0.05
 
-df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
+parallel=True
+
+if parallel:
+    csv_files = glob.glob(f"csv/inference/inference_{y_method}_p{p}_cor{cor}*.csv")
+    df = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+else:
+    df = pd.read_csv(f"csv/inference_{y_method}_p{p}_cor{cor}.csv",)
+
 
 
 

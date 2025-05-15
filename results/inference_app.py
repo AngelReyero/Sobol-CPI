@@ -289,7 +289,7 @@ plt.savefig(f"figures/inference_hidimstats_p{p}_cor{cor}_time_appendix.pdf", bbo
 
 p =50
 cor=0.6
-parallel=False
+parallel=True
 
 if parallel:
     csv_files = glob.glob(f"csv/inference/inference_poly_p{p}_cor{cor}*.csv")
