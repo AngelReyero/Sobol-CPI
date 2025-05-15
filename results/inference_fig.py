@@ -164,6 +164,9 @@ ax[3].set_xscale('log')
 ax[3].tick_params(axis='x', labelsize=18)
 ax[3].tick_params(axis='y', labelsize=18)
 ax[3].set_xlabel('')
+ns = [200, 500, 1000, 5000, 10000, 20000, 30000]
+ax[3].plot(ns, [0.05 for _ in ns], linestyle='--', linewidth=1, color="black")
+#ax[3].axhline(y=0.05, color='black', linestyle='--', linewidth=1)
 ax[3].set_ylabel('Type-I error', fontsize=25)
 ax[3].legend().remove()
 
