@@ -6,8 +6,8 @@ import pandas as pd
 
 
 
-p = 50
-y_method = "poly"
+p = 100
+y_method = "hidimstats"
 
 cor=0.6
 
