@@ -248,7 +248,7 @@ ax[0].set_yscale('log')
 ax[ 0].tick_params(axis='x', labelsize=15)  
 ax[ 0].tick_params(axis='y', labelsize=15) 
 ax[0].set_xlabel(r'')
-ax[ 0].set_ylabel(f'Time', fontsize=20)
+ax[ 0].set_ylabel(f'Time(s)', fontsize=20)
 ax[0].legend().remove()
 
 # Power
@@ -409,7 +409,7 @@ ax[0].set_yscale('log')
 ax[ 0].tick_params(axis='x', labelsize=15)  # Adjust x-axis tick label font size
 ax[ 0].tick_params(axis='y', labelsize=15) 
 ax[0].set_xlabel(r'')
-ax[ 0].set_ylabel(f'Time', fontsize=20)
+ax[ 0].set_ylabel(f'Time(s)', fontsize=20)
 ax[0].legend().remove()
 
 # Power

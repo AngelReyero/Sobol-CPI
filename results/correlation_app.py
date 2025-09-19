@@ -134,7 +134,7 @@ ax[1, 2].set_yscale('log')
 ax[1, 2].tick_params(axis='x', labelsize=15) 
 ax[1, 2].tick_params(axis='y', labelsize=15) 
 ax[1, 2].set_xlabel(r'')
-ax[1, 2].set_ylabel(f'Time', fontsize=20)
+ax[1, 2].set_ylabel(f'Time(s)', fontsize=20)
 ax[1, 2].legend().remove()
 
 
@@ -217,12 +217,12 @@ ax[1].set_ylabel(f'Bias null covariates', fontsize=20)
 ax[ 1].legend().remove()
 
 # Time
-sns.lineplot(data=df, x='intra_cor', y='tr_time', hue='method', palette=palette, ax=ax[2])  
+sns.lineplot(data=df, x='intra_cor', y='training_time', hue='method', palette=palette, ax=ax[2])  
 ax[2].set_yscale('log')
 ax[ 2].tick_params(axis='x', labelsize=15)  
 ax[ 2].tick_params(axis='y', labelsize=15) 
 ax[ 2].set_xlabel(r'')
-ax[ 2].set_ylabel(f'Time', fontsize=20)
+ax[ 2].set_ylabel(f'Time(s)', fontsize=20)
 ax[ 2].legend().remove()
 
 
