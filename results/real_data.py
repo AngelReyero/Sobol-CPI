@@ -16,7 +16,7 @@ demonstrate that the Sobol-CPI method achieves better performance, even for non-
 
 
 data = "wdbc"
-model = "lasso"
+model = "RF"
 alpha = 0.05
 
 
