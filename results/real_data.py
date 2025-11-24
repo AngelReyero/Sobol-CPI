@@ -16,7 +16,7 @@ demonstrate that the Sobol-CPI method achieves better performance, even for non-
 
 
 data = "wdbc"
-model = "RF"
+model = "NN"
 alpha = 0.05
 
 
@@ -125,8 +125,7 @@ df["null_importance"] = df[f"imp_V{null_idx}"]
 pval_cols = [c for c in df.columns if c.startswith("pval")]
 pval_nonnull = pval_cols[:-1]
 
-df["discoveries"] = (df[pval_nonnull] < alpha).mean(axis=1)
-df["discoveries"] = (df[pval_cols] < alpha).mean(axis=1)
+df["discoveries"] = (df[pval_nonnull] < alpha).sum(axis=1)
 df["type_I_error"] = (df[f"pval{null_idx}"] < alpha).astype(int)
 
 
