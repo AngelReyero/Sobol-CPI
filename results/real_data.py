@@ -15,7 +15,7 @@ demonstrate that the Sobol-CPI method achieves better performance, even for non-
 """
 
 
-data = "wdbc"
+data = "california"
 model = "lasso"
 alpha = 0.05
 
@@ -163,7 +163,7 @@ filtered_df = df[df['method'].isin(methods_to_plot)]
 
 sns.lineplot(data=filtered_df, x='corr', y='null_importance', hue='method', palette=palette, ax=ax[0, 0])
 if data == "diabetes":
-    ax[0 , 0].set_ylim(-20, 20)
+    ax[0 , 0].set_ylim(-40, 40)
 ax[0, 0].set_title("Importance of artificial null feature")
 ax[0, 0].tick_params(axis="x", rotation=45)
 ax[0, 0].legend().remove()
