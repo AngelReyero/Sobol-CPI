@@ -64,7 +64,7 @@ for data in datasets:
         # ---------------------------
         # Create figure
         # ---------------------------
-        fig, ax = plt.subplots(1, 2, figsize=(14, 5))
+        fig, ax = plt.subplots(1, 2, figsize=(7, 3))
 
         # 1. Null importance
         methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W', 'PFI']

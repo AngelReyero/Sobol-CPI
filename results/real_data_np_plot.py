@@ -172,7 +172,7 @@ for data in datasets:
         # ---------------------------
         # Create figure
         # ---------------------------
-        fig, ax = plt.subplots(2, 2, figsize=(14, 10))
+        fig, ax = plt.subplots(2, 2, figsize=(7, 5))
 
         # 1. Null importance
         methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W']#, 'PFI']
@@ -186,15 +186,29 @@ for data in datasets:
 
         # 2. Discoveries
         df_PFI = df[
-            (df["method"] != "PFI") &
-            (~df["method"].str.endswith("_n2"))
+            (df["method"] != "PFI") #&
+            #(~df["method"].str.endswith("_n2"))
         ]
-        bad_methods = (
-            df_PFI.groupby("method")["type_I_error"]
-            .max()
-            .loc[lambda s: s > 0.2]
-            .index
-        )
+        if data == "wdbc":
+            bad_methods = (
+                df_PFI
+                .groupby(["method", "corr"])["type_I_error"]
+                .mean()                # mean per (method, correlation)
+                .groupby("method")     # regroup by method
+                .max()                 # max of the means across correlations
+                .loc[lambda s: s > 0.2]
+                .index
+            )
+        else:
+            bad_methods = (
+                df_PFI
+                .groupby(["method", "corr"])["type_I_error"]
+                .mean()                # mean per (method, correlation)
+                .groupby("method")     # regroup by method
+                .max()                 # max of the means across correlations
+                .loc[lambda s: s > 0.2]
+                .index
+            )
 
         # Filter them out
         df_filt = df_PFI[~df_PFI["method"].isin(bad_methods)]
