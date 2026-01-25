@@ -11,7 +11,7 @@ from scipy.stats import binomtest
 
 class Sobol_CPI(BaseEstimator):
     """
-    Sobol Conditional Permutation Importance (CPI) algorithm.
+    Sobol Conditional Permutation Importance (CPI) algorithm with Non-parametric Wilcoxon/ST
     :footcite:t:`
 
     Parameters
