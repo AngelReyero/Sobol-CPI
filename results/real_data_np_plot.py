@@ -5,10 +5,12 @@ import numpy as np
 import pandas as pd
 import glob
 import os
+from matplotlib.lines import Line2D
+
 
 sns.set_style("white")
 
-datasets = ["wdbc", "wine-red", "wine-white", "diabetes"]
+datasets = ["wdbc", "wine-red", "wine-white", "diabetes", "california"]
 models   = ["lasso", "GB", "NN", "SL", "RF"]
 
 alpha = 0.05
@@ -179,36 +181,25 @@ for data in datasets:
         filtered_df = df[df['method'].isin(methods_to_plot)]
         sns.lineplot(data=filtered_df, x='corr', y='null_importance',
                      hue='method', palette=palette, ax=ax[0, 0])
-        ax[0, 0].set_title("Importance of artificial null feature")
+        ax[0, 0].set_title("Importance of artificial null")
         ax[0, 0].axhline(0, ls="--", color="black")
         ax[0, 0].legend().remove()
         ax[0, 0].set_xlabel("")
-
+        ax[0, 0].set_ylabel("")
         # 2. Discoveries
         df_PFI = df[
             (df["method"] != "PFI") #&
             #(~df["method"].str.endswith("_n2"))
         ]
-        if data == "wdbc":
-            bad_methods = (
-                df_PFI
-                .groupby(["method", "corr"])["type_I_error"]
-                .mean()                # mean per (method, correlation)
-                .groupby("method")     # regroup by method
-                .max()                 # max of the means across correlations
-                .loc[lambda s: s > 0.2]
-                .index
-            )
-        else:
-            bad_methods = (
-                df_PFI
-                .groupby(["method", "corr"])["type_I_error"]
-                .mean()                # mean per (method, correlation)
-                .groupby("method")     # regroup by method
-                .max()                 # max of the means across correlations
-                .loc[lambda s: s > 0.2]
-                .index
-            )
+        bad_methods = (
+            df_PFI
+            .groupby(["method", "corr"])["type_I_error"]
+            .mean()                # mean per (method, correlation)
+            .groupby("method")     # regroup by method
+            .max()                 # max of the means across correlations
+            .loc[lambda s: s > 0.2]
+            .index
+        )
 
         # Filter them out
         df_filt = df_PFI[~df_PFI["method"].isin(bad_methods)]
@@ -219,6 +210,7 @@ for data in datasets:
         ax[0, 1].set_title("Discoveries (p < 0.05)")
         ax[0, 1].legend().remove()
         ax[0, 1].set_xlabel("")
+        ax[0, 1].set_ylabel("")
 
         # 3. Type I error
         sns.lineplot(data=df_filt, x='corr', y='type_I_error',
@@ -228,22 +220,59 @@ for data in datasets:
         ax[1, 0].set_title("Type-I Error (null feature)")
         ax[1, 0].legend().remove()
         ax[1, 0].set_xlabel("")
+        ax[1, 0].set_ylabel("")
 
         # 4. Execution time
         sns.lineplot(data=df_filt, x='corr', y='tr_time',
                      hue='method', palette=palette, markers=markers,
                      dashes=dashes, style='method', ax=ax[1, 1])
-        ax[1, 1].set_title("Execution time (log scale)")
+        ax[1, 1].set_title("Time (log scale)")
         ax[1, 1].set_yscale("log")
         ax[1, 1].legend().remove()
         ax[1, 1].set_xlabel("")
+        ax[1, 1].set_ylabel("")
 
+
+        
         fig.text(0.5, -0.02, 'Correlation', ha='center', fontsize=25)
-        plt.tight_layout()
 
-        os.makedirs("figures/realdata", exist_ok=True)
+
+        good_methods = list(df_filt['method'].unique())
+        #print("Good methods for legend:", good_methods)   # debug check
+
+        legend_handles = []
+        for m in good_methods:
+            legend_handles.append(
+                Line2D(
+                    [0], [0],
+                    color=palette.get(m, 'black'),
+                    marker=markers.get(m, None),
+                    linestyle='' if m not in dashes else (0, dashes[m]),
+                    label=m
+                )
+            )
+
+        # --- key part: extra space on the right for legend ---
+        fig.subplots_adjust(right=0.78)
+
+        # add legend
+        leg = fig.legend(
+            handles=legend_handles,
+            loc='center left',
+            bbox_to_anchor=(0.85, 0.5),
+            title="Methods"
+        )
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
         out_path = f"figures/realdata/np_{data}_{model}.pdf"
-        plt.savefig(out_path)
-        plt.close()
+
+        # avoid cutting legend in PDF
+        plt.savefig(out_path, bbox_inches='tight')
+
+
+
+        #plt.tight_layout(rect=[0, 0, 0.85, 1])
+        #os.makedirs("figures/realdata", exist_ok=True)
+        #plt.savefig(out_path)
+        #plt.close()
 
 

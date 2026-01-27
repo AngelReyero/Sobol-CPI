@@ -125,26 +125,28 @@ df['method'] = df['method'].replace('LOCO_sqd', 'LOCO_n2')
 
 
 sns.set_style("white")
-fig, ax = plt.subplots(1, 4, figsize=(24, 6), gridspec_kw={'wspace': 0.3})
+fig, ax = plt.subplots(1, 4, figsize=(14, 3), gridspec_kw={'wspace': 0.3})
 
 # Plot 1: AUC
 methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'LOCO-W']
 filtered_df = df[df['method'].isin(methods_to_plot)]
 sns.lineplot(data=filtered_df, x='n', y='AUC', hue='method', palette=palette, ax=ax[0])
 ax[0].set_xscale('log')
-ax[0].tick_params(axis='x', labelsize=18)
-ax[0].tick_params(axis='y', labelsize=18)
+ax[0].tick_params(axis='x', labelsize=15)
+ax[0].tick_params(axis='y', labelsize=15)
 ax[0].set_xlabel('')
-ax[0].set_ylabel('AUC', fontsize=25)
+ax[0].set_title('AUC', fontsize=20)
+ax[0].set_ylabel("")
 ax[0].legend().remove()
 
 # Plot 2: Bias non-null covariates
 sns.lineplot(data=filtered_df, x='n', y='non_null', hue='method', palette=palette, ax=ax[1])
 ax[1].set_xscale('log')
-ax[1].tick_params(axis='x', labelsize=18)
-ax[1].tick_params(axis='y', labelsize=18)
+ax[1].tick_params(axis='x', labelsize=15)
+ax[1].tick_params(axis='y', labelsize=15)
 ax[1].set_xlabel('')
-ax[1].set_ylabel('Bias non-null covariates', fontsize=25)
+ax[1].set_title('Bias non-null', fontsize=20)
+ax[1].set_ylabel("")
 ax[1].legend().remove()
 
 # Plot 3: Power
@@ -152,26 +154,30 @@ methods_to_plot_bt = ['Sobol-CPI(1)_bt', 'Sobol-CPI(10)_bt', 'Sobol-CPI(100)_bt'
 filtered_df_bt = df[df['method'].isin(methods_to_plot_bt)]
 sns.lineplot(data=filtered_df_bt, x='n', y='power', hue='method', palette=palette, ax=ax[2])
 ax[2].set_xscale('log')
-ax[2].tick_params(axis='x', labelsize=18)
-ax[2].tick_params(axis='y', labelsize=18)
+ax[2].tick_params(axis='x', labelsize=15)
+ax[2].tick_params(axis='y', labelsize=15)
 ax[2].set_xlabel('')
-ax[2].set_ylabel('Power', fontsize=25)
+ax[2].set_title('Power', fontsize=20)
+ax[2].set_ylabel("")
 ax[2].legend().remove()
 
 # Plot 4: Type-I error
 sns.lineplot(data=filtered_df_bt, x='n', y='type_I', hue='method', palette=palette, ax=ax[3])
 ax[3].set_xscale('log')
-ax[3].tick_params(axis='x', labelsize=18)
-ax[3].tick_params(axis='y', labelsize=18)
+ax[3].tick_params(axis='x', labelsize=15)
+ax[3].tick_params(axis='y', labelsize=15)
 ax[3].set_xlabel('')
 ns = [200, 500, 1000, 5000, 10000, 20000, 30000]
 ax[3].plot(ns, [0.05 for _ in ns], linestyle='--', linewidth=1, color="black")
 #ax[3].axhline(y=0.05, color='black', linestyle='--', linewidth=1)
-ax[3].set_ylabel('Type-I error', fontsize=25)
+ax[3].set_title('Type-I error', fontsize=20)
+ax[3].set_ylabel("")
 ax[3].legend().remove()
 
-fig.text(0.5, -0.02, 'Number of samples', ha='center', fontsize=25)
+fig.text(0.5, -0.08, 'Number of samples', ha='center', fontsize=20)
 
+fig.subplots_adjust(wspace=0.1)   # horizontal spacing
+fig.subplots_adjust(hspace=0.01) 
 
 plt.savefig(f"figures/inference_p{p}_cor{cor}_{y_method}.pdf", bbox_inches="tight")
 

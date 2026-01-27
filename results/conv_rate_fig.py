@@ -15,7 +15,7 @@ Plot of double robustness with complex learners from the main text.
 parallel=True
 p=50
 cor=0.6
-n_samples=[100, 250, 500, 1000, 2000, 5000]
+n_samples=[100, 200, 500, 1000, 2000, 5000]
 super_learner=True
 y_method="nonlin"
 
@@ -107,7 +107,7 @@ palette = {'Sobol-CPI(100)': 'purple', 'Sobol-CPI(1)': 'blue', 'LOCO-W':'green',
 sns.set_style("white")
 
 # Create figure and GridSpec
-fig = plt.figure(figsize=(26, 6))
+fig = plt.figure(figsize=(14, 3))
 gs = gridspec.GridSpec(1, 5, width_ratios=[1, -0.15, 1, 1, 1], wspace=0.3)  # 0.1 is the spacer
 
 # Define axes, with a spacer in position 1
@@ -130,10 +130,11 @@ sns.lineplot(data=df, x='n_samples', y='imp_V0', hue='method', palette=palette, 
 th_cv_v0 = theoretical_curve(y_method, 0, cor, p, beta=[2, 1])
 ax0.plot(n_samples, [th_cv_v0 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
 ax0.set_xscale('log')
-ax0.tick_params(axis='x', labelsize=18)
-ax0.tick_params(axis='y', labelsize=18)
+ax0.tick_params(axis='x', labelsize=15)
+ax0.tick_params(axis='y', labelsize=15)
 ax0.set_xlabel('')
-ax0.set_ylabel(f'Importance of $X_0$', fontsize=25)
+ax0.set_ylabel('')
+ax0.set_title(f'Importance of $X_0$', fontsize=20)
 ax0.legend().remove()
 
 # Plot for imp_V6 (subplot 2)
@@ -141,34 +142,38 @@ sns.lineplot(data=df, x='n_samples', y='imp_V6', hue='method', palette=palette, 
 th_cv_v6 = theoretical_curve(y_method, 6, cor, p, beta=[2, 1])
 ax1.plot(n_samples, [th_cv_v6 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
 ax1.set_xscale('log')
-ax1.tick_params(axis='x', labelsize=18)
-ax1.tick_params(axis='y', labelsize=18)
+ax1.tick_params(axis='x', labelsize=15)
+ax1.tick_params(axis='y', labelsize=15)
 ax1.set_xlabel('')
-ax1.set_ylabel(f'Importance of $X_6$', fontsize=25)
+ax1.set_ylabel('')
+ax1.set_title(f'Importance of $X_6$', fontsize=20)
 ax1.legend().remove()
 
 # Plot for AUC (subplot 3)
 sns.lineplot(data=df, x='n_samples', y='AUC', hue='method', palette=palette, ax=ax2)
 ax2.set_xscale('log')
-ax2.tick_params(axis='x', labelsize=18)
-ax2.tick_params(axis='y', labelsize=18)
+ax2.tick_params(axis='x', labelsize=15)
+ax2.tick_params(axis='y', labelsize=15)
 ax2.set_xlabel('')
-ax2.set_ylabel('AUC', fontsize=25)
+ax2.set_ylabel('')
+ax2.set_title('AUC', fontsize=20)
 ax2.legend().remove()
 
 # Plot for null importance (subplot 4)
 sns.lineplot(data=df, x='n_samples', y='null_imp', hue='method', palette=palette, ax=ax3)
 ax3.set_xscale('log')
-ax3.tick_params(axis='x', labelsize=18)
-ax3.tick_params(axis='y', labelsize=18)
+ax3.tick_params(axis='x', labelsize=15)
+ax3.tick_params(axis='y', labelsize=15)
 ax3.set_xlabel('')
-ax3.set_ylabel('Bias null covariates', fontsize=25)
+ax3.set_ylabel('')
+ax3.set_title('Bias null', fontsize=20)
 ax3.legend().remove()
 
 # Add common x-axis label
-fig.text(0.5, -0.02, 'Number of samples', ha='center', fontsize=25)
+fig.text(0.5, -0.06, 'Number of samples', ha='center', fontsize=20)
 
-
+fig.subplots_adjust(wspace=0.12)   # horizontal spacing
+fig.subplots_adjust(hspace=0.01) 
 # Save figure
 if super_learner: 
     plt.savefig(f"figures/conv_rates_{y_method}_p{p}_cor{cor}_super.pdf", bbox_inches="tight")

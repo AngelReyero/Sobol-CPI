@@ -31,7 +31,7 @@ def main(args):
         y_method = "nonlin"
         p=50
         cor=0.6
-        n_samples=[100]#[100, 250, 500, 1000, 2000, 5000]
+        n_samples=[100, 250, 500, 1000, 2000, 5000]
         cor_meth='toep'
         sparsity=0.25
         super_learner=True
