@@ -139,11 +139,22 @@ sns.lineplot(data=df_filt, x='n_samples', y='imp_V0', hue='method', palette=pale
 th_cv_v0 = theoretical_curve(y_method, 0, cor, p, beta=[2, 1])
 ax0.plot(n_samples, [th_cv_v0 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
 ax0.set_xscale('log')
-ax0.tick_params(axis='x', labelsize=15)
+# ax0.tick_params(axis='x', labelsize=15)
 ax0.tick_params(axis='y', labelsize=15)
 ax0.set_xlabel('')
 ax0.set_ylabel('')
 ax0.set_title(f'Importance of $X_0$', fontsize=20)
+
+ax0.tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
+ax0.axhline(0, color='black', linewidth=0.8, alpha=0.7)
 ax0.legend().remove()
 
 # Plot for imp_V6 (subplot 2)
@@ -151,7 +162,17 @@ sns.lineplot(data=df, x='n_samples', y='imp_V6', hue='method', palette=palette, 
 th_cv_v6 = theoretical_curve(y_method, 6, cor, p, beta=[2, 1])
 ax1.plot(n_samples, [th_cv_v6 for _ in n_samples], label=r"Theoretical", linestyle='--', linewidth=1, color="black")
 ax1.set_xscale('log')
-ax1.tick_params(axis='x', labelsize=15)
+#ax1.tick_params(axis='x', labelsize=15)
+ax1.tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
+
 ax1.tick_params(axis='y', labelsize=15)
 ax1.set_xlabel('')
 ax1.set_ylabel('')
@@ -161,7 +182,18 @@ ax1.legend().remove()
 # Plot for AUC (subplot 3)
 sns.lineplot(data=df, x='n_samples', y='AUC', hue='method', palette=palette, ax=ax2)
 ax2.set_xscale('log')
-ax2.tick_params(axis='x', labelsize=15)
+#ax2.tick_params(axis='x', labelsize=15)
+ax2.tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
+ax2.axhline(0.5, color='black', linewidth=0.8, alpha=0.7)
+
 ax2.tick_params(axis='y', labelsize=15)
 ax2.set_xlabel('')
 ax2.set_ylabel('')
@@ -171,7 +203,16 @@ ax2.legend().remove()
 # Plot for null importance (subplot 4)
 sns.lineplot(data=df, x='n_samples', y='null_imp', hue='method', palette=palette, ax=ax3)
 ax3.set_xscale('log')
-ax3.tick_params(axis='x', labelsize=15)
+#ax3.tick_params(axis='x', labelsize=15)
+ax3.tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax3.tick_params(axis='y', labelsize=15)
 ax3.set_xlabel('')
 ax3.set_ylabel('')

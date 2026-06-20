@@ -132,17 +132,37 @@ methods_to_plot = ['Sobol-CPI(1)', 'Sobol-CPI(10)', 'Sobol-CPI(100)', 'LOCO', 'L
 filtered_df = df[df['method'].isin(methods_to_plot)]
 sns.lineplot(data=filtered_df, x='n', y='AUC', hue='method', palette=palette, ax=ax[0])
 ax[0].set_xscale('log')
-ax[0].tick_params(axis='x', labelsize=15)
+#ax[0].tick_params(axis='x', labelsize=15)
+ax[0].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[0].tick_params(axis='y', labelsize=15)
 ax[0].set_xlabel('')
 ax[0].set_title('AUC', fontsize=20)
+ax[0].axhline(0.5, color='black', linewidth=0.8, alpha=0.7)
+
 ax[0].set_ylabel("")
 ax[0].legend().remove()
 
 # Plot 2: Bias non-null covariates
 sns.lineplot(data=filtered_df, x='n', y='non_null', hue='method', palette=palette, ax=ax[1])
 ax[1].set_xscale('log')
-ax[1].tick_params(axis='x', labelsize=15)
+#ax[1].tick_params(axis='x', labelsize=15)
+ax[1].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[1].tick_params(axis='y', labelsize=15)
 ax[1].set_xlabel('')
 ax[1].set_title('Bias non-null', fontsize=20)
@@ -154,7 +174,16 @@ methods_to_plot_bt = ['Sobol-CPI(1)_bt', 'Sobol-CPI(10)_bt', 'Sobol-CPI(100)_bt'
 filtered_df_bt = df[df['method'].isin(methods_to_plot_bt)]
 sns.lineplot(data=filtered_df_bt, x='n', y='power', hue='method', palette=palette, ax=ax[2])
 ax[2].set_xscale('log')
-ax[2].tick_params(axis='x', labelsize=15)
+#ax[2].tick_params(axis='x', labelsize=15)
+ax[2].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[2].tick_params(axis='y', labelsize=15)
 ax[2].set_xlabel('')
 ax[2].set_title('Power', fontsize=20)
@@ -164,7 +193,16 @@ ax[2].legend().remove()
 # Plot 4: Type-I error
 sns.lineplot(data=filtered_df_bt, x='n', y='type_I', hue='method', palette=palette, ax=ax[3])
 ax[3].set_xscale('log')
-ax[3].tick_params(axis='x', labelsize=15)
+#ax[3].tick_params(axis='x', labelsize=15)
+ax[3].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[3].tick_params(axis='y', labelsize=15)
 ax[3].set_xlabel('')
 ns = [200, 500, 1000, 5000, 10000, 20000, 30000]

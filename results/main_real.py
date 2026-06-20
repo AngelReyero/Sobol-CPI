@@ -166,7 +166,16 @@ sns.lineplot(data=filtered_df, x='corr', y='null_importance',
              hue='method', palette=palette, ax=ax[0])
 ax[0].set_title("Null Importance", fontsize=20)
 ax[0].set_xlabel("")
-ax[0].tick_params(axis='x', labelsize=15)
+#ax[0].tick_params(axis='x', labelsize=15)
+ax[0].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[0].tick_params(axis='y', labelsize=15)
 ax[0].set_ylabel("")
 ax[0].legend().remove()
@@ -200,7 +209,16 @@ sns.lineplot(data=df_filt, x='corr', y='discoveries',
 ax[1].set_title("Discoveries (p < 0.05)",fontsize=20 )
 ax[1].set_xlabel("")
 ax[1].set_ylabel("")
-ax[1].tick_params(axis='x', labelsize=15)
+#ax[1].tick_params(axis='x', labelsize=15)
+ax[1].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[1].tick_params(axis='y', labelsize=15)
 ax[1].legend().remove()
 
@@ -212,7 +230,16 @@ ax[2].set_title("Type-I Error", fontsize=20)
 ax[2].axhline(alpha, ls="--", color="black")
 ax[2].set_xlabel("")
 ax[2].set_ylabel("")
-ax[2].tick_params(axis='x', labelsize=15)
+#ax[2].tick_params(axis='x', labelsize=15)
+ax[2].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[2].tick_params(axis='y', labelsize=15)
 ax[2].legend().remove()
 
@@ -224,7 +251,16 @@ ax[3].set_title("Time (s)(log-scale)", fontsize=20)
 ax[3].set_yscale("log")
 ax[3].set_xlabel("")
 ax[3].set_ylabel("")
-ax[3].tick_params(axis='x', labelsize=15)
+#ax[3].tick_params(axis='x', labelsize=15)
+ax[3].tick_params(
+    axis='x',
+    which='major',
+    bottom=True,
+    length=5,      # length of the mark
+    width=1,
+    direction='out',
+    labelsize=15
+)
 ax[3].tick_params(axis='y', labelsize=15)
 ax[3].legend().remove()
 
