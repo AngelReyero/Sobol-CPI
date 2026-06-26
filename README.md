@@ -28,12 +28,13 @@ This repository contains the code required to reproduce all experiments presente
 ## Citation
 
 ```bibtex
-@article{reyerolobo2025conditionalfeatureimportance,
-  author = {Reyero Lobo, Angel and Neuvial, Pierre and Thirion, Bertrand},
-  title = {Conditional Feature Importance revisited: Double Robustness, Efficiency and Inference},
-  year = {2025},
-  eprint = {2501.17520},
-  archivePrefix = {arXiv},
-  primaryClass = {stat.ML}
+@misc{reyerolobo2026conditionalfeatureimportancerevisited,
+      title={Conditional Feature Importance revisited: Double Robustness, Efficiency and Inference}, 
+      author={Angel Reyero-Lobo and Pierre Neuvial and Bertrand Thirion},
+      year={2026},
+      eprint={2501.17520},
+      archivePrefix={arXiv},
+      primaryClass={math.ST},
+      url={https://arxiv.org/abs/2501.17520}, 
 }
 ```
